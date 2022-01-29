@@ -1,0 +1,26 @@
+.sidebar {
+  background: var(--gray-800);
+  width: 10%;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  // padding: 0 0.5rem;
+  gap: 2rem;
+}
+
+.ant-menu-item,
+.ant-menu-submenu-title,
+.ant-menu-title-content {
+  color: var(--gray-100);
+    // font-size: 1.25em;
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  //   margin-top: 2rem;
+  //   border-radius: 1rem 2rem 3rem 4rem;
+}
+
+.ant-menu-item {
+  border-radius: 1rem 2rem 3rem 4rem;
+}
