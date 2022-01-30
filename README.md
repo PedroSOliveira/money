@@ -19,7 +19,7 @@ Principais tecnologias utilizadas neste projeto são apresentadas na tabela abai
 
 | Tecnologia                               | Descrição                                                                     |
 | :--------------------------------------- | :---------------------------------------------------------------------------- |          
-| [ReactJS](https://pt-br.reactjs.org/)    | Biblioteca JavaScript para criar interfaces de usuário.                       |
+| [React JS](https://pt-br.reactjs.org/)    | Biblioteca JavaScript para criar interfaces de usuário.                       |
 | [Ant Design](https://ant.design/)        | Biblioteca para auxiliar nas criação de componentes de interface.             |
 | [Toastify](https://fkhadra.github.io/react-toastify/introduction)| Recurso para auxiliar na demonstração de mensagens para o usuário             |
 | [Netlify](https://www.netlify.com/)       | Tecnologia para realizar o deploy da aplicação.                              |
