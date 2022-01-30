@@ -1,11 +1,11 @@
 .container-modal {
-  display: flex;
-  flex-direction: column;
+
   background: var(--white-200);
   border-radius: 0.5rem;
-  padding: 1.5rem;
-
+  display: flex;
+  flex-direction: column;
   gap: 1rem;
+  padding: 1.5rem;
 
   h1, label {
     color: var(--gray-800);
@@ -21,9 +21,9 @@
 
   input {
       background: var(--gray-200);
-      padding: 0.5rem;
       border-radius: 0.5rem;
       border: none;
+      padding: 0.5rem;
 
     &:placeholder {
         color: var(--gray-900);

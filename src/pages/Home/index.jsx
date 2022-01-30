@@ -1,169 +1,106 @@
-import { Sidebar } from "../../components/Sidebar";
-import { Header } from "../../components/Header";
-import { Table, Tooltip } from "antd";
-
-import "react-toastify/dist/ReactToastify.css";
-import { toast, ToastContainer } from "react-toastify";
-
-import { useState, useEffect, useCallback } from "react";
-
-import "./styles.scss";
-import { Button } from "../../components/Button";
+import { Table } from "antd";
 import Search from "antd/lib/input/Search";
 
+import { useCallback, useEffect, useState } from "react";
 import { FiEdit2, FiTrash2 } from "react-icons/fi";
 
-import { SearchColumn } from "../../components/SearchColumn";
-import { ServiceApiIndexadores } from "../../services/Indexadores";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import { Button } from "../../components/Button";
 import { FormModal } from "../../components/FormModal";
+import { Header } from "../../components/Header";
+import { Sidebar } from "../../components/Sidebar";
+import { ServiceApiIndexadores } from "../../services/Indexadores";
+
+import "./styles.scss";
 
 const { Column } = Table;
 
-const columns = [
-  {
-    title: "Título",
-    dataIndex: "name",
-    key: "name",
-    render: (text) => <a>{text}</a>,
-    // width: 150,
-  },
-  {
-    title: "Símbolo",
-    dataIndex: "age",
-    key: "age",
-    // width: 80,
-  },
-  {
-    title: "Actions",
-    dataIndex: "address",
-    key: "address 1",
-    ellipsis: {
-      showTitle: false,
-    },
-    render: (address) => (
-      // <Tooltip placement="topLeft" title={address}>
-      //   {address}
-      // </Tooltip>
-      <div className="actions-table">
-        <button className="btn-table btn-edit">
-          <FiEdit2 className="icon-edit" /> Editar
-        </button>
-        <button className="btn-table btn-delete">
-          <FiTrash2 className="icon-edit" /> Deletar
-        </button>
-        {/* <FiTrash2 className="icon-delete" /> */}
-      </div>
-    ),
-  },
-];
-
-const data = [
-  {
-    key: "1",
-    name: "Sistema Especial de Liquidação e Custódia",
-    age: "Selic",
-    address: "New York No. 1 Lake Park, New York No. 1 Lake Park",
-  },
-  {
-    key: "2",
-    name: "Sistema Especial de Liquidação e Custódia",
-    age: "Selic",
-    address: "London No. 2 Lake Park, London No. 2 Lake Park",
-  },
-  {
-    key: "3",
-    name: "Sistema Especial de Liquidação e Custódia",
-    age: "Selic",
-    address: "Sidney No. 1 Lake Park, Sidney No. 1 Lake Park",
-  },
-  {
-    key: "4",
-    name: "Sistema Especial de Liquidação e Custódia",
-    age: "Selic",
-    address: "New York No. 1 Lake Park, New York No. 1 Lake Park",
-  },
-  {
-    key: "5",
-    name: "Sistema Especial de Liquidação e Custódia",
-    age: "Selic",
-    address: "London No. 2 Lake Park, London No. 2 Lake Park",
-  },
-  {
-    key: "6",
-    name: "Sistema Especial de Liquidação e Custódia",
-    age: "Selic",
-    address: "New York No. 1 Lake Park, New York No. 1 Lake Park",
-  },
-  {
-    key: "7",
-    name: "Sistema Especial de Liquidação e Custódia",
-    age: "Selic",
-    address: "London No. 2 Lake Park, London No. 2 Lake Park",
-  },
-];
+const PAGE_SIZE = 7;
 
 export const Home = () => {
+  const [nameFilter, setNameFilter] = useState("");
+  const [sizeElements, setSizeElements] = useState(0);
   const [loading, setLoading] = useState(false);
   const [indexadores, setIndexadores] = useState([]);
   const [isVisibleFormModal, setVisibleFormModal] = useState(false);
   const [idIndexador, setIdIndexador] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const getDataAllIndexadores = useCallback(async () => {
-    try {
-      setLoading(true);
+  const handlePaginationChange = (page) => {
+    setCurrentPage(page);
+  };
 
-      const responseData = await ServiceApiIndexadores.getAllIndexadores();
-      const { data: indexadores } = responseData;
+  const pagination = {
+    current: currentPage,
+    defaultPageSize: PAGE_SIZE,
+    pageSize: PAGE_SIZE,
+    total: sizeElements,
+    onChange: handlePaginationChange,
+    showSizeChanger: false,
+  } || { total: sizeElements };
 
-      setIndexadores(indexadores);
-
-      // const comicSend = responseData.results[0];
-      // setComicSend(comicSend);
-
-      // console.log(responseData);
-      console.log(indexadores);
-      // console.log(comicSend.thumbnail.path);
-      // setTotal(responseData.total);
-    } catch (error) {
-      alert(error.message);
-    } finally {
-      setLoading(false);
-    }
-  }, [ServiceApiIndexadores]);
-
-  const handleDeleteIndexador = useCallback(
-    async (id) => {
+  const getDataAllIndexadores = useCallback(
+    async (PAGE_SIZE, currentPage, nameFilter) => {
       try {
-        const responseData = await ServiceApiIndexadores.deleteIndexador(id);
-        toast.success("Tudo certo!!!");
+        setLoading(true);
 
-        console.log(responseData);
+        const { data: responseData, headers: responseHeaders } =
+          await ServiceApiIndexadores.getAllIndexadores(
+            PAGE_SIZE,
+            currentPage,
+            nameFilter
+          );
+        const { data: indexadores } = responseData;
+        const { "x-total-count": sizeElements } = responseHeaders;
+
+        setSizeElements(sizeElements);
+        setIndexadores(indexadores);
       } catch (error) {
         alert(error.message);
       } finally {
+        setLoading(false);
       }
     },
-    [ServiceApiIndexadores]
+    []
   );
+
+  const handleDeleteIndexador = useCallback(async (id) => {
+    try {
+      const responseData = await ServiceApiIndexadores.deleteIndexador(id);
+      const { message } = responseData.data;
+
+      toast.success(message);
+
+      getDataAllIndexadores(PAGE_SIZE, currentPage);
+    } catch (error) {
+      toast.error(error.message);
+      console.error(error.stack);
+    }
+  }, []);
 
   const handleOpenEditModal = (id) => {
     setIdIndexador(id);
     setVisibleFormModal(true);
-  }
+  };
 
   const handleAddNewIndexador = () => {
     setIdIndexador(0);
     setVisibleFormModal(true);
-  }
+  };
+
+  const onSearchIndexador = (text) => {
+    setCurrentPage(1);
+    setNameFilter(text);
+  };
 
   useEffect(() => {
-    getDataAllIndexadores();
-    // console.log("state" + indexadores)
-  }, [getDataAllIndexadores, handleDeleteIndexador]);
+    getDataAllIndexadores(PAGE_SIZE, currentPage, nameFilter);
+  }, [currentPage, nameFilter]);
 
   return (
     <div className="home">
-      {/* <Header /> */}
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -176,29 +113,30 @@ export const Home = () => {
         pauseOnHover
         theme="colored"
       />
-      <Sidebar />
+      <Header />
       <main className="container">
-        <Header />
+        <Sidebar />
 
         <section className="content">
-          {/* <form action="onSubmit" className="form"> */}
           <div className="content-header">
             <h1>Indexadores</h1>
-            {/* <h1>Indexadores</h1> */}
-
-            <Button
-              title="Cadastrar"
-              onClick={handleAddNewIndexador}
-            />
+            <Button title="Cadastrar" onClick={handleAddNewIndexador} />
           </div>
-          <Search placeholder="Buscar indexador" style={{ width: 200 }} />
+
+          <Search
+            className="search-indexador"
+            placeholder="Buscar indexador(es)"
+            style={{ width: 200 }}
+            onSearch={(value) => onSearchIndexador(value)}
+          />
+
           <Table
-            // columns={columns}
-            // style={{borderRadius: "1rem", padding: "1rem"}}
-            // size="large"
+            size="small"
+            scroll={{ x: 0, y: 320 }}
             rowKey="id"
             dataSource={indexadores}
             loading={loading}
+            pagination={pagination}
           >
             <Column
               title="Título"
@@ -212,50 +150,39 @@ export const Home = () => {
               key="1"
               render={(data) => <span>{data}</span>}
             />
-            <Column
-              title="Data de cadastro"
-              dataIndex="dataCadastro"
-              key="2"
-              render={(data) => <span>{data}</span>}
-            />
-            <Column
-              title="Data de alteração"
-              dataIndex="dataAlteracao"
-              key="3"
-              render={(data) => <span>{data}</span>}
-            />
+
             <Column
               title="Editar"
-              // dataIndex="dataAlteracao"
               key="4"
               render={(item) => (
                 <button
                   onClick={() => handleOpenEditModal(item.id)}
                   className="btn-table btn-edit"
                 >
-                  <FiEdit2 className="icon-edit" /> Editar
+                  <FiEdit2 className="icon-edit" /> <span> Editar </span>
                 </button>
               )}
             />
             <Column
               title="Excluir"
-              // dataIndex="dataAlteracao"
               key="5"
               render={(item) => (
                 <button
                   onClick={() => handleDeleteIndexador(item.id)}
                   className="btn-table btn-delete"
                 >
-                  <FiTrash2 className="icon-edit" /> Deletar
+                  <FiTrash2 className="icon-edit" /> <span> Deletar </span>
                 </button>
               )}
             />
           </Table>
+
           {isVisibleFormModal && (
             <FormModal
               indexadorId={idIndexador}
               isOpen={isVisibleFormModal}
               onRequestClose={() => setVisibleFormModal(false)}
+              getDataAllIndexadores={getDataAllIndexadores}
             />
           )}
         </section>

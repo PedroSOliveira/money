@@ -1,39 +1,46 @@
+import { useCallback, useEffect, useState } from "react";
 import Modal from "react-modal";
 
-import { useCallback, useEffect, useState } from "react";
-import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import closeImg from "../../assets/close.svg";
 
-import "./styles.scss";
-import { Button } from "../Button";
 import { ServiceApiIndexadores } from "../../services/Indexadores";
+import { Button } from "../Button";
 
-export const FormModal = ({ isOpen, onRequestClose, indexadorId }) => {
+import "./styles.scss";
+
+export const FormModal = ({
+  isOpen,
+  onRequestClose,
+  getDataAllIndexadores,
+  indexadorId,
+}) => {
   const [nome, setNome] = useState("");
   const [simbolo, setSimbolo] = useState("");
-  //   const [comic, setComic] = useState(null);
 
-  const handleAddNewIndexador = useCallback(
-    async (nome, simbolo) => {
-      if (nome && simbolo) {
-        try {
-          const responseData = await ServiceApiIndexadores.createIndexador(
-            nome,
-            simbolo
-          );
-          console.log(responseData);
-          toast.success("Indexador cadastrado!!!");
-          onRequestClose();
-        } catch (error) {
-          alert(error.message);
-        }
-      } else {
-        toast.error("Campos vazios!!!");
+  const handleAddNewIndexador = useCallback(async (nome, simbolo) => {
+    if (nome && simbolo) {
+      try {
+        const responseData = await ServiceApiIndexadores.createIndexador(
+          nome,
+          simbolo
+        );
+        const { message } = responseData.data;
+
+        toast.success(message);
+
+        onRequestClose();
+        getDataAllIndexadores();
+      } catch (error) {
+        toast.error(error.message);
+        console.log(error.stack);
       }
-    },
-    [ServiceApiIndexadores]
-  );
+    } else {
+      toast.warning("Campos vazios!!!");
+    }
+  }, []);
 
   const handleUpdateIndexador = useCallback(
     async (indexadorId, simbolo, nome) => {
@@ -44,11 +51,14 @@ export const FormModal = ({ isOpen, onRequestClose, indexadorId }) => {
             nome,
             simbolo
           );
-          console.log(responseData);
-          toast.success(" Atualizado!!!");
+
+          const { message } = responseData.data;
+          toast.success(message);
           onRequestClose();
+          getDataAllIndexadores();
         } catch (error) {
-          alert(error.message);
+          toast.error(error.message);
+          console.log(error.stack);
         }
       } else {
         toast.error("Campos vazios!!!");
@@ -57,29 +67,22 @@ export const FormModal = ({ isOpen, onRequestClose, indexadorId }) => {
     []
   );
 
-  const getDataIndexador = useCallback(
-    async (indexadorId) => {
-      if (indexadorId !== 0) {
-        try {
-          const responseData = await ServiceApiIndexadores.getIndexador(
-            indexadorId
-          );
-          const { simbolo, nome } = responseData;
+  const getDataIndexador = useCallback(async (indexadorId) => {
+    if (indexadorId !== 0) {
+      try {
+        const responseData = await ServiceApiIndexadores.getIndexador(
+          indexadorId
+        );
+        const { simbolo, nome } = responseData;
 
-          setSimbolo(simbolo);
-          setNome(nome);
-          console.log(simbolo, nome);
-          //   setComic(responseData);
-          //   console.log(responseData);
-        } catch (error) {
-          alert(error.message);
-        }
+        setSimbolo(simbolo);
+        setNome(nome);
+      } catch (error) {
+        alert(error.message);
+        console.error(error.stack);
       }
-    },
-    [ServiceApiIndexadores]
-  );
-
-  const teste = () => {};
+    }
+  }, []);
 
   const onChangeNome = (text) => {
     setNome(text);
@@ -92,10 +95,11 @@ export const FormModal = ({ isOpen, onRequestClose, indexadorId }) => {
 
   useEffect(() => {
     getDataIndexador(indexadorId);
-  }, [getDataIndexador]);
+  }, []);
 
   return (
     <Modal
+      ariaHideApp={false}
       isOpen={isOpen}
       onRequestClose={onRequestClose}
       overlayClassName="react-modal-overlay"
@@ -115,7 +119,11 @@ export const FormModal = ({ isOpen, onRequestClose, indexadorId }) => {
           theme="colored"
         />
         <header className="header-modal">
-          <h1>Cadastrar indexador</h1>
+          {indexadorId === 0 ? (
+            <h1>Cadastrar indexador</h1>
+          ) : (
+            <h1>Atualizar indexador</h1>
+          )}
           <button
             type="button"
             onClick={onRequestClose}

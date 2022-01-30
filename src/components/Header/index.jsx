@@ -1,13 +1,16 @@
 import { Divider } from "antd";
+import { FiLogOut, FiMail } from "react-icons/fi";
+
 import { Logo } from "../Logo";
 
-import { FiMail, FiLogOut } from "react-icons/fi";
-
 import "./styles.scss";
+
+
 
 export const Header = () => {
   return (
     <header className="header">
+        <Logo />
       <div className="header-content">
         <FiMail />
         <Divider className="divider" type="vertical" />
