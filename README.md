@@ -1,70 +1,104 @@
-# Getting Started with Create React App
+# Finances Money
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![Money - Google Chrome 30_01_2022 17_39_34](https://user-images.githubusercontent.com/37816505/151717103-0f5e047f-6310-41a2-81f6-b095c4925506.png)
 
-## Available Scripts
 
-In the project directory, you can run:
+<!-- 
+1. Descrição do projeto
+2. Tecnologias utilizadas
+3. Organização do projeto
+4. Build e deploy
+5. Desenvolvimento 
+-->
 
-### `yarn start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 1. Descrição do projeto
+## 1.1. Tecnologias
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Principais tecnologias utilizadas neste projeto são apresentadas na tabela abaixo.
 
-### `yarn test`
+| Tecnologia                               | Descrição                                                                     |
+| :--------------------------------------- | :---------------------------------------------------------------------------- |          
+| [ReactJS](https://pt-br.reactjs.org/)    | Biblioteca JavaScript para criar interfaces de usuário.                       |
+| [Ant Design](https://ant.design/)        | Biblioteca para auxiliar nas criação de componentes de interface.             |
+| [Toastify](https://fkhadra.github.io/react-toastify/introduction)| Recurso para auxiliar na demonstração de mensagens para o usuário             |
+| [Netlify](https://www.netlify.com/)       | Tecnologia para realizar o deploy da aplicação.                              |
+| [Sass](https://sass-lang.com/)  | Pré-processador CSS.                                                                   |
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `yarn build`
+## 1.2. Organização do projeto
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+A organização do projeto é apresentada abaixo.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+    ├── src
+        ├── assets
+        ├── components
+           ├── Button
+           ├── FormModal
+           ├── Header
+           ├── Logo
+           ├── Sidebar
+        ├── pages
+           ├── Home
+        ├── services
+        └── README.md
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+| Pasta                     | Descrição                                                                                                                       |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| assets                    | Contém os elementos visuais da aplicação, como imagens, etc...                                                                  |
+| components                | Contém componentes reutilizáveis ao decorrer da aplicação                                                                       |
+| pages                     | Contém as páginas da aplicação                                                                                                  |
+| services                  | Contém a comunicação da aplicação com a Api                                                                                     |
 
-### `yarn eject`
+------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+| Arquivo                   | Descrição                                                                           |
+| ------------------------- | ----------------------------------------------------------------------------------- |
+| Button                    | Botão utilizado na aplicação                                                        |
+| FormModal                 | Contém o modal utilizado para cadastrar e atualizar informçaões do indexador        |
+| Header                    | Contém o cabeçalho da aplicação com o logo e informações estáticas de perfil        |
+| Logo                      | Estilização do logo da aplicação                                                    |
+| Sidebar                   | Contém o menu lateral da aplicação                                                  |
+| Home                      | Página inicial onde é listado os indexadores e as opções mencionadas abaixo         |
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+                                                
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 1.3. Específicações sobre as funcionalidades
+É possível fazer algumas operações sobre os indexadores, tais como, criar, editar,
+excluir, atualizar e filtrar. A seguir veja com mais detalhes cada uma delas.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+|Operação     | Descrição
+|------------ | -----------------------
+| Criar       | É possível criar indexadores enviando símbolo e seu respectivo nome(funcionalidade presente no FormModal)
+| Editar      | É possível editar indexadores enviando símbolo e seu respectivo nome(funcionalidade presente no FormModal)
+| Excluir     | Os indexadores também podem ser apagados de forma permanente.
+| Filtrar     | Os indexadores podem ser filtrados.
+| Paginar     | Paginação dos dados.
 
-## Learn More
+  
+## 2.  Como executar
+Clone o projeto e acesse a pasta onde foi clonado.
+Para iniciá-lo usando o **yarn**, siga os passos abaixo:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+# Instalar as dependências com yarn 
+$ yarn
+# Iniciar o projeto
+$ yarn start
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Para iniciá-lo usando o **npm**, siga os passos abaixo:
 
-### Code Splitting
+```
+# Instalar as dependências com npm 
+$ npm install
+# Iniciar o projeto
+$ npm start
+```
+Para acessá-lo, basta acessar pelo seu browser pelo endereço http://localhost:3000.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 3. Aplicação - pode ser acessada pelo link: https://financesmoney.netlify.app/
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+![Money - Google Chrome 30_01_2022 17_39_34](https://user-images.githubusercontent.com/37816505/151717103-0f5e047f-6310-41a2-81f6-b095c4925506.png)
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
