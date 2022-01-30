@@ -6,6 +6,8 @@
 
 :root {
   --white: #ffff;
+  --white-200: #f0f2f5;
+
 
   --pink: #d53f8c;
 
@@ -16,6 +18,7 @@
   --green-300: #1da57a;
 
   --gray-100: #e0e0e7;
+  --gray-200: #dadde4;
   --gray-300: #a8a8b3;
   --gray-600: #1f2729;
   --gray-800: #001529;
@@ -83,4 +86,41 @@ button {
   background: var(--green-300);
   border-radius: 20px;
   border: 5px solid var(--gray-800);
+}
+
+.react-modal-overlay {
+  background: rgba(0, 0, 0, 0.5);
+
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.react-modal-content {
+  width: 100%;
+  max-width: 500px;
+  position: relative;
+  border-radius: 1rem;
+  border: 0;
+  outline: 0;
+}
+
+.react-modal-close {
+  background: var(--white);
+  position: absolute;
+  padding: 0.45rem;
+  color: var(--white);
+  top: 0.25rem;
+  right: 0;
+
+  border: 0;
+  background: transparent;
+
+  transition: filter 0.2s;
 }
